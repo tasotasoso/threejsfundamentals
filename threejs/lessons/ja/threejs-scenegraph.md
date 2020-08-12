@@ -13,7 +13,7 @@ Three.js's core is arguably its scene graph. A scene graph in a 3D
 engine is a hierarchy of nodes in a graph where each node represents
 a local space.
 Three.jsの核心は間違いなくシーングラフです。
-3Dエンジンのシーングラフは、各ノードが部分空間を表現しているグラフのノードの階層です。
+3Dエンジンのシーングラフは、各ノードがローカルな空間を表現しているグラフのノードの階層です。
 
 <img src="resources/images/scenegraph-generic.svg" align="center">
 
@@ -32,6 +32,8 @@ its motion relative to the Sun is some crazy spirograph like
 curve from the Moon's point of view it just has to concern itself with rotating
 around the Earth's local space.
 地球は太陽を回っています。月は地球を回っています。
+月は地球の周りを円を描いて回って移動しています。月の視点からだと、地球の"ローカルな空間"を回っていることになります。
+たとえ、そのような場合でも、太陽に関係しているその動きは、クレイジーな螺旋
 
 {{{diagram url="resources/moon-orbit.html" }}}
 
