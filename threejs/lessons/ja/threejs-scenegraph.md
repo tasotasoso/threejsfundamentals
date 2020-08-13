@@ -33,7 +33,7 @@ curve from the Moon's point of view it just has to concern itself with rotating
 around the Earth's local space.
 地球は太陽を回っています。月は地球を回っています。
 月は地球の周りを円を描いて回って移動しています。月の視点からだと、地球の"ローカルな空間"を回っていることになります。
-たとえ、そのような場合でも、太陽に関係しているその動きは、クレイジーな螺旋
+太陽との相対的な動きは、月の視点から見るとクレイジーな螺旋のような曲線ですが、地球のローカルな空間の周りを回転していると捉える必要があります。
 
 {{{diagram url="resources/moon-orbit.html" }}}
 
@@ -47,6 +47,11 @@ the sun at around 67,000 miles per hour. Your position in the solar
 system is similar to that of the moon above but you don't have to concern
 yourself. You just worry about your position relative to the earth in its
 "local space".
+それを別の方法で考えると、地球に住んでいるあなたが、地球が地軸の周りを自転していることも、
+太陽の周りを公転していることも、考える必要はありません。
+皆さんは全くもって地球が動きも回りもしていないかのように、歩いたりドライブしたり
+泳いだり走ったりするだけです。
+地球の"ローカルな空間"で歩いたり、ドライブしたり、泳いだり、走ったり、そして生活したりしていても、みなさんは地球の上で、太陽と相対的に1,600km/h、太陽の周りを107,200km/hの速度で回っています。
 
 Let's take it one step at a time. Imagine we want to make
 a diagram of the sun, earth, and moon. We'll start with the sun by
