@@ -60,6 +60,12 @@ sun, earth, moon as a demonstration of how to use a scene graph. Of course
 the real sun, earth, and moon use physics but for our purposes we'll
 fake it with a scene graph.
 
+一歩進みましょう。私たちは太陽と地球と月との図を作りたいと想像してください。
+まず、太陽から始めましょう。ただ球体を作り原点に置くだけです。
+シーングラフを使う方法のデモンストレーションとして、太陽、地球、月を使うことは、気を留めておいてください。
+もちろん、現実の太陽、地球、月は物理学を使いますが、目的のため、私たちはシーングラフで代用します。
+
+
 ```js
 // an array of objects whose rotation to update
 const objects = [];
@@ -80,6 +86,8 @@ objects.push(sunMesh);
 
 We're using a really low-polygon sphere. Only 6 subdivisions around its equator.
 This is so it's easy to see the rotation.
+本当に少ないポリゴンから成る球体を使います。緯度方向にたった6分割です。
+これで、回転が見やすくなります。
 
 We're going to reuse the same sphere for everything so we'll set a scale
 for the sun mesh of 5x.
