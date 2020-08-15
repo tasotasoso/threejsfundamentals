@@ -91,14 +91,19 @@ This is so it's easy to see the rotation.
 
 We're going to reuse the same sphere for everything so we'll set a scale
 for the sun mesh of 5x.
+同じ球体を全ての球体に再利用するつもりなので、太陽のメッシュの大きさを5倍にしておきます。
 
 We also set the phong material's `emissive` property to yellow. A phong material's
 emissive property is basically the color that will be drawn with no light hitting
 the surface. Light is added to that color.
+また、phong materialの`emissive`属性を黄色に設定します。
+phong materialのemissive属性は、基本的に光が当たっていない表面に描かれる色です。
 
 Let's also put a single point light in the center of the scene. We'll go into more
 details about point lights later but for now the simple version is a point light
 represents light that emanates from a single point.
+次に、シーンの真ん中に1つ点光源を置きましょう。後ほどより詳細に点光源について説明しますが、
+とりあえず簡単な説明は、一点から発せられる明かりです。
 
 ```js
 {
