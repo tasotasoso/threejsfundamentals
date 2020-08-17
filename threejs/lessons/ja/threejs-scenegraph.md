@@ -121,6 +121,13 @@ we pass to `lookAt`. Before we do that though we need to tell the camera
 which way the top of the camera is facing or rather which way is "up" for the
 camera. For most situations positive Y being up is good enough but since
 we are looking straight down we need to tell the camera that positive Z is up.
+見やすくするために、直接原点を見下ろすようにカメラをおきましょう。
+最も簡単な方法は `lookAt`関数を使うことです。
+`lookAt`関数は、引数に渡した位置を「見る」ようにカメラの向きを向けます。
+それをする前に、カメラの上部がどの方向を向いているか、またはカメラが
+どの方向を向いているかを、カメラに伝える必要があります。
+ほとんどの場合、正のYが上になるのが十分に良いですが、
+見下ろすために、正のZが上だとカメラに伝えるのが必要です。
 
 ```js
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
