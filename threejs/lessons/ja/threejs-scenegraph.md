@@ -138,6 +138,7 @@ camera.lookAt(0, 0, 0);
 
 In the render loop, adapted from previous examples, we're rotating all
 objects in our `objects` array with this code.
+レンダリングループの中で、前の例を参考にして、以下のコードで、`objects`配列の中の全てのオブジェクトを回転させています。
 
 ```js
 objects.forEach((obj) => {
@@ -146,10 +147,12 @@ objects.forEach((obj) => {
 ```
 
 Since we added the `sunMesh` to the `objects` array it will rotate.
+`sunMesh`を`objects`配列に追加したので、回転します。
 
 {{{example url="../threejs-scenegraph-sun.html" }}}
 
 Now let's add in the earth.
+さて、地球を追加してみましょう。
 
 ```js
 const earthMaterial = new THREE.MeshPhongMaterial({color: 0x2233FF, emissive: 0x112244});
@@ -161,6 +164,8 @@ objects.push(earthMesh);
 
 We make a material that is blue but we gave it a small amount of *emissive* blue
 so that it will show up against our black background.
+青いマテリアルを作っていますが、黒背景に対して目立つよう、
+*emissive*に少し青色を設定します。
 
 We use the same `sphereGeometry` with our new blue `earthMaterial` to make
 an `earthMesh`. We position that 10 units to the left of the sun
