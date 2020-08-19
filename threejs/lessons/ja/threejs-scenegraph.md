@@ -171,11 +171,16 @@ We use the same `sphereGeometry` with our new blue `earthMaterial` to make
 an `earthMesh`. We position that 10 units to the left of the sun
 and add it to the scene.  Since we added it to our `objects` array it will
 rotate too.
+同じ`sphereGeometry`を使っていますが、`earthMesh`を作るため、新しい青色の`earthMaterial`を使っています。それを太陽の10ユニット左側に置き、シーンに追加します。
+`objects`配列にそれを追加したので、回転します。
+
 
 {{{example url="../threejs-scenegraph-sun-earth.html" }}}
 
 You can see both the sun and the earth are rotating but the earth is not
 going around the sun. Let's make the earth a child of the sun
+太陽と地球の両方が回転して見えますが、地球は太陽の周りを公転していません。
+地球を太陽の子にしてみましょう。
 
 ```js
 -scene.add(earthMesh);
