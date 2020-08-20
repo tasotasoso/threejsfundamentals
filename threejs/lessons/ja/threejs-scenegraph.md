@@ -193,6 +193,8 @@ and...
 
 What happened? Why is the earth the same size as the sun and why is it so far away?
 I actually had to move the camera from 50 units above to 150 units above to see the earth.
+なにが起きましたか？なぜ地球が太陽と同じ大きさで、こんなに離れているのでしょうか。
+地球を見るためには、実際にカメラを50ユニット上から、150ユニット上に動かす必要がありました。
 
 We made the `earthMesh` a child of the `sunMesh`. The `sunMesh` has
 its scale set to 5x with `sunMesh.scale.set(5, 5, 5)`. That means the
@@ -200,13 +202,21 @@ its scale set to 5x with `sunMesh.scale.set(5, 5, 5)`. That means the
  will be multiplied by 5. That means the earth is now 5x larger and
  it's distance from the sun (`earthMesh.position.x = 10`) is also
  5x as well.
+`earthMesh`を`sunMesh`の子としていました。
+`sunMesh`は`sunMesh.scale.set(5, 5, 5)`によって5倍に大きさを設定しています。
+よって、`sunMesh`のローカルな空間は5倍大きくなりました。
+その空間におかれるあらゆるものは5倍されるのです。
+つまり、地球が5倍大きくなり、太陽からの距離も同じく5倍（`earthMesh.position.x = 10`）になりました。
 
  Our scene graph currently looks like this
+ シーングラフは、このように見えます。
 
 <img src="resources/images/scenegraph-sun-earth.svg" align="center">
 
 To fix it let's add an empty scene graph node. We'll parent both the sun and the earth
 to that node.
+修正するため。シーングラフに空のノードを追加しましょう。
+そして、太陽と地球の両方をそのノードの親にしましょう。
 
 ```js
 +const solarSystem = new THREE.Object3D();
