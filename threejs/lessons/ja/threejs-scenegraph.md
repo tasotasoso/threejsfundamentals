@@ -240,21 +240,28 @@ objects.push(earthMesh);
 
 Here we made an `Object3D`. Like a `Mesh` it is also a node in the scene graph
 but unlike a `Mesh` it has no material or geometry. It just represents a local space.
+ここで`Object3D`を作りました。`Mesh`のように、シーングラフのノードですが、`Mesh`とは異なり、マテリアルかジオメトリを持ちません。
+ただローカルな空間を表現するだけです。
 
 Our new scene graph looks like this
+新しいシーングラフはこのように見えます。
 
 <img src="resources/images/scenegraph-sun-earth-fixed.svg" align="center">
 
 Both the `sunMesh` and the `earthMesh` are children of the `solarSystem`. All 3
 are being rotated and now because the `earthMesh` is not a child of the `sunMesh`
 it is no longer scaled by 5x.
+`sunMesh`と`earthMesh`は共に`solarSystem`の子要素です。3つ全部が回転していますが、
+いま`earthMesh`は`sunMesh`の子要素ではないので、5倍にスケールされません。
 
 {{{example url="../threejs-scenegraph-sun-earth-orbit-fixed.html" }}}
 
 Much better. The earth is smaller than the sun and it's rotating around the sun
 and rotating itself.
+とてもよくなりました。地球は太陽よりも小さく、太陽の周りを公転しつつ、自転しています。
 
 Continuing that same pattern let's add a moon.
+続けて、同様の方法で月を追加してみましょう。
 
 ```js
 +const earthOrbit = new THREE.Object3D();
@@ -282,19 +289,27 @@ objects.push(earthMesh);
 Again we added another invisible scene graph node, an `Object3D` called `earthOrbit`
 and added both the `earthMesh` and the `moonMesh` to it. The new scene graph looks like
 this.
+再び、描画されないシーングラフのノードを追加しました。これは、`earthOrbit`と呼ばれる`Object3D`です。
+そして、このノードに`earthMesh`と`moonMesh`の両方を追加しました。
+新しいシーングラフはこのように見えます。
 
 <img src="resources/images/scenegraph-sun-earth-moon.svg" align="center">
 
 and here's that
+そして、このように描画されます。
 
 {{{example url="../threejs-scenegraph-sun-earth-moon.html" }}}
 
 You can see the moon follows the spirograph pattern shown at the top
 of this article but we didn't have to manually compute it. We just
 setup our scene graph to do it for us.
+記事の上部でお見せした螺旋のパターンに沿った月が見えます。しかし、手動で操作する必要はありませんでした。
+ただシーングラフをそれが可能なようにします。
 
 It is often useful to draw something to visualize the nodes in the scene graph.
 Three.js has some helpful ummmm, helpers to ummm, ... help with this.
+シーンフラフでノードが見えるように何かを書くことは便利です。
+Three.jsはいくつかの便利なうーむを持っていて、うーむを補助し、これを助けます。
 
 One is called an `AxesHelper`. It draws 3 lines representing the local
 <span style="color:red">X</span>,
