@@ -368,11 +368,15 @@ object and a property name on that object and based on the type of the property
 automatically makes a UI to manipulate that property.
 [dat.GUI](https://github.com/dataarts/dat.gui)も使います。
 これはthree.jsプロジェクトでとても一般的なUIライブラリです。
-dat.GUIは
+dat.GUIはオブジェクトとそのオブジェクトの属性名を受け取り、
+プロパティの型に基づいて自動的にその属性を操作するUIを作成します。
 
 We want to make both a `GridHelper` and an `AxesHelper` for each node. We need
 a label for each node so we'll get rid of the old loop and switch to calling
 some function to add the helpers for each node
+それぞれのノードに対して、`GridHelper`と`AxesHelper`の両方を作りたいです。
+それぞれのノートにラベルが必要なので、古いループを削除し、
+各ノードのhelperを加える関数を呼ぶ形に切り替えていきます。
 
 ```js
 -// add an AxesHelper to each node
@@ -405,6 +409,15 @@ to appear/disappear based on a single property so we'll make a class
 that has a getter and setter for a property. That way we can let dat.GUI
 think it's manipulating a single property but internally we can set
 the visible property of both the `AxesHelper` and `GridHelper` for a node.
+`makeAxisGrid`は、dat.GUIをハッピーにする`AxisGridHelper`クラスを作ります。
+前述したように、dat.GUIは、オブジェクトの名前が付いた属性を操作するUIを自動的に生成します。
+属性の型に応じて異なるUIが作成されます。
+チェックボックスを作って欲しいので、`bool`属性を指定する必要があります。
+しかし、軸とグリッドの両方を一つの属性で表示/非表示にしたいので、属性のgetterとsetterを
+持ったクラスを作成します。
+この方法で、dat.GUIに一つの属性を操作するように思わせることができますが、
+内部的には各ノードに`AxesHelper`と`GridHelper`の両方のvisibleプロパティを設定することができます。
+
 
 ```js
 // Turns both axes and grid visible on/off
@@ -442,6 +455,9 @@ class AxisGridHelper {
 One thing to notice is we set the `renderOrder` of the `AxesHelper`
 to 2 and for the `GridHelper` to 1 so that the axes get drawn after the grid.
 Otherwise the grid might overwrite the axes.
+注意することは`AxesHelper`の`renderOrder`を2に設定し、`GridHelper`には1を設定することです。
+こうすることで、軸はグリッドの後に描画されます。
+そうしないと、グリッドが軸を上書きしてしまうかもしれません。
 
 {{{example url="../threejs-scenegraph-sun-earth-moon-axes-grids.html" }}}
 
@@ -450,16 +466,27 @@ units out from the center just like we set above. You can see how the
 earth is in the *local space* of the `solarSystem`. Similarly if you
 turn on the `earthOrbit` you'll see how the moon is exactly 2 units
 from the center of the *local space* of the `earthOrbit`.
+`solarSystem`のチェックをオンにすると、まさに先ほど設定したように、
+どのように地球が中心からちょうど10ユニットにあるか分かるでしょう。
+地球が`solarSystem`の*ローカルな空間*にどのように存在するか見ることができます。
+同様に、もし`earthOrbit`のチェックをオンにすると、
+どのように月が`earthOrbit`の*ローカルな空間*の中心から、ちょうど2ユニットあるか分かるでしょう。
 
 A few more examples of scene graphs. An automobile in a simple game world might have a scene graph like this
+もう少しシーングラフの例を紹介します。
+簡単なゲームの世界の自動車はこのようなシーングラフを持っているかもしれません。
 
 <img src="resources/images/scenegraph-car.svg" align="center">
 
 If you move the car's body all the wheels will move with it. If you wanted the body
 to bounce separate from the wheels you might parent the body and the wheels to a "frame" node
 that represents the car's frame.
+もし車のbody全体を動かすと、それに伴ってwheelsが動くでしょう。
+もしbodyにwheelsとは別にバウンドして欲しいとすると、
+bodyとwheelsを、車のフレームを表す"frame"ノードの親とすることができます。
 
 Another example is a human in a game world.
+別の例はゲームの世界の人間です。
 
 <img src="resources/images/scenegraph-human.svg" align="center">
 
@@ -467,18 +494,29 @@ You can see the scene graph gets pretty complex for a human. In fact
 that scene graph above is simplified. For example you might extend it
 to cover every finger (at least another 28 nodes) and every toe
 (yet another 28 nodes) plus ones for the face and jaw, the eyes and maybe more.
+とても複雑になった人間のシーングラフを見てください。
+実際は、上記のシーングラフは単純化されています。例えば、全ての手の指(少なくとも28ノード)、
+全ての足の指(さらに28ノード)、加えて顔と顎、目とたぶんもっとほかの部位を
+カバーするように、拡張できるかもしれません。
+
 
 Let's make one semi-complex scene graph. We'll make a tank. The tank will have
 6 wheels and a turret. The tank will follow a path. There will be a sphere that
 moves around and the tank will target the sphere.
+もう少し複雑なシーングラフを作りましょう。戦車を作ります。
+戦車は6つの車輪と砲塔があります。戦車はある道筋に沿って走ります。
+そこら中を移動する球体があり、戦車はその球体を狙うとしましょう。
 
 Here's the scene graph. The meshes are colored in green, the `Object3D`s in blue,
 the lights in gold, and the cameras in purple. One camera has not been added
 to the scene graph.
+これがシーングラフです。メッシュは緑色、`Object3D`は青色、明かりは金色、カメラは紫色です。
+シーングラフに追加されていないカメラが一つあります。
 
 <div class="threejs_center"><img src="resources/images/scenegraph-tank.svg" style="width: 800px;"></div>
 
 Look in the code to see the setup of all of these nodes.
+コードを見て、これらのノードの設定を確認してください。
 
 For the target, the thing the tank is aiming at, there is a `targetOrbit`
 (`Object3D`) which just rotates similar to the `earthOrbit` above. A
