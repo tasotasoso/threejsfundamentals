@@ -332,6 +332,11 @@ To do this we set their material's `depthTest` to false which means they will
 not check to see if they are drawing behind something else. We also
 set their `renderOrder` to 1 (the default is 0) so that they get drawn after
 all the spheres. Otherwise a sphere might draw over them and cover them up.
+私たちの場合、たとえ球体の内側であったとしても、軸を表示させたいです。
+これをするために、マテリアルの`depthTest`をfalseにします。
+これによって、軸がなにかの内側に描画されているかどうかチェックしなくなります。
+全ての球体の後に描画されるように、`renderOrder`も1に設定します（デフォルト値は0です）。
+そうしないと、球体が軸の上に描画され、軸を覆ってしまう可能性があります。
 
 {{{example url="../threejs-scenegraph-sun-earth-moon-axes.html" }}}
 
@@ -340,6 +345,9 @@ We can see the
 <span style="color:blue">z (blue)</span> axes. Since we are looking
 straight down and each of our objects is only rotating around its
 y axis we don't see much of the <span style="color:green">y (green)</span> axes.
+<span style="color:red">x (赤)</span> と<span style="color:blue">z (青)</span>の
+軸が見えます。私たちはオブジェクトをまっすぐ見下ろしていて、オブジェクトはy軸を中心に
+回転しているので、 <span style="color:green">y (緑)</span>軸があまり見えません。
 
 It might be hard to see some of them as there are 2 pairs of overlapping axes. Both the `sunMesh`
 and the `solarSystem` are at the same position. Similarly the `earthMesh` and
@@ -347,11 +355,20 @@ and the `solarSystem` are at the same position. Similarly the `earthMesh` and
 to turn them on/off for each node.
 While we're at it let's also add another helper called the `GridHelper`. It
 makes a 2D grid on the X,Z plane. By default the grid is 10x10 units.
+位置が重なった軸が2組あるので、見づらいかもしれません。
+`sunMesh`と`solarSystem`は同じ場所にあります。
+同様に、`earthMesh`と`earthOrbit`は同じ場所にあります。
+各ノードに対してオン/オフできるように、簡単な操作を加えてみましょう。
+そのついでに、`GridHelper` というヘルパー関数も追加しておきましょう。
+これはX,Z平面に2次元グリッドを作ります。デフォルトでは、グリッドは10x10ユニットです。
 
 We're also going to use [dat.GUI](https://github.com/dataarts/dat.gui) which is
 a UI library that is very popular with three.js projects. dat.GUI takes an
 object and a property name on that object and based on the type of the property
 automatically makes a UI to manipulate that property.
+[dat.GUI](https://github.com/dataarts/dat.gui)も使います。
+これはthree.jsプロジェクトでとても一般的なUIライブラリです。
+dat.GUIは
 
 We want to make both a `GridHelper` and an `AxesHelper` for each node. We need
 a label for each node so we'll get rid of the old loop and switch to calling
