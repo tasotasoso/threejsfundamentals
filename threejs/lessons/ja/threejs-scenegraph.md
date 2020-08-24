@@ -1,4 +1,4 @@
-Title: Three.js　シーングラフ
+Title: Three.jsのシーングラフ
 Description: シーングラフとはなにか？
 TOC: シーングラフ
 
@@ -32,8 +32,8 @@ its motion relative to the Sun is some crazy spirograph like
 curve from the Moon's point of view it just has to concern itself with rotating
 around the Earth's local space.
 地球は太陽を回っています。月は地球を回っています。
-月は地球の周りを円を描いて回って移動しています。月の視点からだと、地球の"ローカルな空間"を回っていることになります。
-太陽との相対的な動きは、月の視点から見るとクレイジーな螺旋のような曲線ですが、地球のローカルな空間の周りを回転していると捉える必要があります。
+月は地球の周りを円を描いて移動しています。月から見ると、地球の"ローカルな空間"を回っていることになります。
+太陽との相対的な動きは、月の視点から見るとクレイジーな螺旋のような曲線に見えますが、単に地球のローカルな空間を周回していると捉える必要があります。
 
 {{{diagram url="resources/moon-orbit.html" }}}
 
@@ -47,11 +47,13 @@ the sun at around 67,000 miles per hour. Your position in the solar
 system is similar to that of the moon above but you don't have to concern
 yourself. You just worry about your position relative to the earth in its
 "local space".
-それを別の方法で考えると、地球に住んでいるあなたが、地球が地軸の周りを自転していることも、
-太陽の周りを公転していることも、考える必要はありません。
-皆さんは全くもって地球が動きも回りもしていないかのように、歩いたりドライブしたり
-泳いだり走ったりするだけです。
-地球の"ローカルな空間"で歩いたり、ドライブしたり、泳いだり、走ったり、そして生活したりしていても、みなさんは地球の上で、太陽と相対的に1,600km/h、太陽の周りを107,200km/hの速度で回っています。
+別の考え方をしてみます。地球が地軸の周りを自転していることも、太陽の周りを公転していることも、
+地球に住んでいるあなたが考える必要はありません。
+皆さんは全くもって地球が動きも回りもしていないかのように、
+歩いたり、ドライブしたり、泳いだり、走ったりするだけです。
+地球の"ローカルな空間"で歩いたり、ドライブしたり、泳いだり、走ったり、そして生活したりしていても、みなさんは太陽と相対的に、地球の上で1,600km/hの速さで回転し、太陽の周りを107,200km/hの速度で回っています。
+太陽系上のみなさんの位置は、前述した月と同じようなものですが、気にする必要はありません。
+みなさんは地球の"ローカルな空間"で、地球との相対的な位置だけを心配していればいいのです。
 
 Let's take it one step at a time. Imagine we want to make
 a diagram of the sun, earth, and moon. We'll start with the sun by
@@ -59,11 +61,10 @@ just making a sphere and putting it at the origin. Note: We're using
 sun, earth, moon as a demonstration of how to use a scene graph. Of course
 the real sun, earth, and moon use physics but for our purposes we'll
 fake it with a scene graph.
-
-一歩進みましょう。私たちは太陽と地球と月との図を作りたいと想像してください。
+一歩進みましょう。私たちは太陽と地球と月との図を作りたいと想像してみてください。
 まず、太陽から始めましょう。ただ球体を作り原点に置くだけです。
-シーングラフを使う方法のデモンストレーションとして、太陽、地球、月を使うことは、気を留めておいてください。
-もちろん、現実の太陽、地球、月は物理学を使いますが、目的のため、私たちはシーングラフで代用します。
+シーングラフを使う方法の演習として、太陽、地球、月を使うことを、気に留めておいてください。
+もちろん、現実の太陽、地球、月は物理学に従いますが、演習目的なので、シーングラフで代用します。
 
 
 ```js
@@ -86,24 +87,25 @@ objects.push(sunMesh);
 
 We're using a really low-polygon sphere. Only 6 subdivisions around its equator.
 This is so it's easy to see the rotation.
-本当に少ないポリゴンから成る球体を使います。緯度方向にたった6分割です。
-これで、回転が見やすくなります。
+本当に少ないポリゴンからできた球体を使います。緯度方向にたった6分割です。
+これで、回転していることが見やすくなります。
 
 We're going to reuse the same sphere for everything so we'll set a scale
 for the sun mesh of 5x.
-同じ球体を全ての球体に再利用するつもりなので、太陽のメッシュの大きさを5倍にしておきます。
+同じ球体を全ての球体に使いまわすつもりなので、太陽のメッシュの大きさを5倍にしておきます。
 
 We also set the phong material's `emissive` property to yellow. A phong material's
 emissive property is basically the color that will be drawn with no light hitting
 the surface. Light is added to that color.
 また、phong materialの`emissive`属性を黄色に設定します。
-phong materialのemissive属性は、基本的に光が当たっていない表面に描かれる色です。
+phong materialのemissive属性は、基本的に、光が当たっていない表面に描かれる色です。
+光源はその色に付け加えられます。
 
 Let's also put a single point light in the center of the scene. We'll go into more
 details about point lights later but for now the simple version is a point light
 represents light that emanates from a single point.
-次に、シーンの真ん中に1つ点光源を置きましょう。後ほどより詳細に点光源について説明しますが、
-とりあえず簡単な説明は、一点から発せられる明かりです。
+次に、シーンの真ん中に1つ点光源を置きましょう。後ほど、より詳細に点光源について説明しますが、
+一点から発せられる明かりというのが、とりあえずの簡単な説明です。
 
 ```js
 {
@@ -121,13 +123,13 @@ we pass to `lookAt`. Before we do that though we need to tell the camera
 which way the top of the camera is facing or rather which way is "up" for the
 camera. For most situations positive Y being up is good enough but since
 we are looking straight down we need to tell the camera that positive Z is up.
-見やすくするために、直接原点を見下ろすようにカメラをおきましょう。
+見やすくするために、直接原点を見下ろすようにカメラを置きましょう。
 最も簡単な方法は `lookAt`関数を使うことです。
-`lookAt`関数は、引数に渡した位置を「見る」ようにカメラの向きを向けます。
-それをする前に、カメラの上部がどの方向を向いているか、またはカメラが
-どの方向を向いているかを、カメラに伝える必要があります。
-ほとんどの場合、正のYが上になるのが十分に良いですが、
-見下ろすために、正のZが上だとカメラに伝えるのが必要です。
+`lookAt`関数は、引数に渡した位置を「見る」ようにカメラを向けます。
+その前に、カメラの上部がどの方向を向いているか、もしくはどの方向が
+カメラにとって"上"なのかを、カメラに伝える必要があります。
+ほとんどの場合、Y軸の正が上で十分ですが、
+今は見下ろしているので、Z軸の正が上だとカメラに伝える必要があります。
 
 ```js
 const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
@@ -171,8 +173,9 @@ We use the same `sphereGeometry` with our new blue `earthMaterial` to make
 an `earthMesh`. We position that 10 units to the left of the sun
 and add it to the scene.  Since we added it to our `objects` array it will
 rotate too.
-同じ`sphereGeometry`を使っていますが、`earthMesh`を作るため、新しい青色の`earthMaterial`を使っています。それを太陽の10ユニット左側に置き、シーンに追加します。
-`objects`配列にそれを追加したので、回転します。
+`earthMesh`を作るため、新しく作った青色の`earthMaterial`と、先と同じ`sphereGeometry`を使います。
+それを太陽の10ユニット左側に置き、シーンに追加します。
+これは`objects`配列にそれを追加されたので、同様に回転します。
 
 
 {{{example url="../threejs-scenegraph-sun-earth.html" }}}
@@ -188,13 +191,14 @@ going around the sun. Let's make the earth a child of the sun
 ```
 
 and...
+そして...
 
 {{{example url="../threejs-scenegraph-sun-earth-orbit.html" }}}
 
 What happened? Why is the earth the same size as the sun and why is it so far away?
 I actually had to move the camera from 50 units above to 150 units above to see the earth.
 なにが起きましたか？なぜ地球が太陽と同じ大きさで、こんなに離れているのでしょうか。
-地球を見るためには、実際にカメラを50ユニット上から、150ユニット上に動かす必要がありました。
+地球を見るためには、実際のところ、カメラを50ユニット上から、150ユニット上に動かす必要がありました。
 
 We made the `earthMesh` a child of the `sunMesh`. The `sunMesh` has
 its scale set to 5x with `sunMesh.scale.set(5, 5, 5)`. That means the
@@ -202,11 +206,11 @@ its scale set to 5x with `sunMesh.scale.set(5, 5, 5)`. That means the
  will be multiplied by 5. That means the earth is now 5x larger and
  it's distance from the sun (`earthMesh.position.x = 10`) is also
  5x as well.
-`earthMesh`を`sunMesh`の子としていました。
+`earthMesh`を`sunMesh`の子要素としました。
 `sunMesh`は`sunMesh.scale.set(5, 5, 5)`によって5倍に大きさを設定しています。
 よって、`sunMesh`のローカルな空間は5倍大きくなりました。
 その空間におかれるあらゆるものは5倍されるのです。
-つまり、地球が5倍大きくなり、太陽からの距離も同じく5倍（`earthMesh.position.x = 10`）になりました。
+つまり、地球が5倍大きくなり、太陽からの距離も5倍（`earthMesh.position.x = 10`）になりました。
 
  Our scene graph currently looks like this
  シーングラフは、このように見えます。
@@ -215,8 +219,8 @@ its scale set to 5x with `sunMesh.scale.set(5, 5, 5)`. That means the
 
 To fix it let's add an empty scene graph node. We'll parent both the sun and the earth
 to that node.
-修正するため。シーングラフに空のノードを追加しましょう。
-そして、太陽と地球の両方をそのノードの親にしましょう。
+これを修正するため、シーングラフに空のノードを追加しましょう。
+そして、太陽と地球の両方をそのノードの子要素にしましょう。
 
 ```js
 +const solarSystem = new THREE.Object3D();
@@ -252,7 +256,7 @@ Both the `sunMesh` and the `earthMesh` are children of the `solarSystem`. All 3
 are being rotated and now because the `earthMesh` is not a child of the `sunMesh`
 it is no longer scaled by 5x.
 `sunMesh`と`earthMesh`は共に`solarSystem`の子要素です。3つ全部が回転していますが、
-いま`earthMesh`は`sunMesh`の子要素ではないので、5倍にスケールされません。
+いま`earthMesh`は`sunMesh`の子要素ではないので、5倍に拡大されません。
 
 {{{example url="../threejs-scenegraph-sun-earth-orbit-fixed.html" }}}
 
@@ -303,13 +307,14 @@ and here's that
 You can see the moon follows the spirograph pattern shown at the top
 of this article but we didn't have to manually compute it. We just
 setup our scene graph to do it for us.
-記事の上部でお見せした螺旋のパターンに沿った月が見えます。しかし、手動で操作する必要はありませんでした。
-ただシーングラフをそれが可能なようにします。
+記事の上部でお見せした螺旋のパターンに沿った月が見えます。
+しかし、手動で操作する必要はありませんでした。
+シーングラフを設定しただけです。
 
 It is often useful to draw something to visualize the nodes in the scene graph.
 Three.js has some helpful ummmm, helpers to ummm, ... help with this.
-シーンフラフでノードが見えるように何かを書くことは便利です。
-Three.jsはいくつかの便利なうーむを持っていて、うーむを補助し、これを助けます。
+シーンフラフのノードが見えるようななにかを描写すると便利なことがあります。
+Three.jsはこれをするのに、helpful ummmmとか、helpers to ummmとか...があります。
 
 One is called an `AxesHelper`. It draws 3 lines representing the local
 <span style="color:red">X</span>,
