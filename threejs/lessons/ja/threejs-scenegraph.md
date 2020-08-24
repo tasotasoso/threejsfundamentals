@@ -525,6 +525,13 @@ offset from the `targetOrbit` and a base elevation. Childed to that is another
 `Object3D` called `targetBob` which just bobs up and down relative to the
 `targetElevation`. Finally there's the `targetMesh` which is just a cube we
 rotate and change it's colors
+ターゲット、つまり戦車が狙っているもののために、`targetOrbit`(`Object3D`) があります。
+これはちょうど前述の`earthOrbit`と同じように回転します。
+`targetOrbit`の子要素である`targetElevation` (`Object3D`)は、`targetOrbit`と基準となる高さからの
+オフセットを提供します。
+この子要素には、`targetElevation`に対して相対的に浮き沈みする、`targetBob`と呼ばれる別の`Object3D`があります。
+最後に、回転させて色を変えることができるだけの立方体である`targetMesh`があります。
+
 
 ```js
 // move target
@@ -542,6 +549,12 @@ along that curve. 0.0 is the start of the curve. 1.0 is the end of the curve. It
 asks for the current position where it puts the tank. It then asks for a
 position slightly further down the curve and uses that to point the tank in that
 direction using `Object3D.lookAt`.
+戦車には、`tank`と呼ばれる`Object3D`があります。
+これを使って戦車の下のものをすべて移動させることができます。
+コードでは`SplineCurve`を使っています。これは曲線に沿った位置を求めることができます。
+0.0は曲線の始点です。1.0は曲線の終点です。これにより、戦車がある現在地を求めます。
+次に、カーブの少し下の方の位置を求めて、`Object3D.lookAt`を使い、戦車をその方向に向けます。
+
 
 ```js
 const tankPosition = new THREE.Vector2();
@@ -560,6 +573,8 @@ tank.lookAt(tankTarget.x, 0, tankTarget.y);
 The turret on top of the tank is moved automatically by being a child
 of the tank. To point it at the target we just ask for the target's world position
 and then again use `Object3D.lookAt`
+戦車のてっぺんに付いている砲塔は、戦車の子要素なので自動的に動かされます。
+ターゲットの方を向かせるのに、ターゲットの世界の位置を求め、次に再度`Object3D.lookAt`を使うだけです。
 
 ```js
 const targetPosition = new THREE.Vector3();
@@ -574,6 +589,8 @@ turretPivot.lookAt(targetPosition);
 There's a `turretCamera` which is a child of the `turretMesh` so
 it will move up and down and rotate with the turret. We make that
 aim at the target.
+`turretMesh`の子要素である`turretCamera`があるので、砲塔と一緒に上下に動き、回転します。
+
 
 ```js
 // make the turretCamera look at target
@@ -585,6 +602,10 @@ around with the target. We aim that back at the tank. It's purpose is to allow t
 `targetCamera` to be offset from the target itself. If we instead made the camera
 a child of `targetBob` and just aimed the camera itself it would be inside the
 target.
+`targetBob`の子要素である`targetCameraPivot`もあります。これはターゲットと浮遊します。
+戦車に狙いを定めましょう。`targetCamera`にターゲット自身に高さを合わせるためです。
+もし代わりにカメラを`targetBob`の子要素にして、カメラ自身に狙いを定めさせると、
+ターゲットの内側になってしまうでしょう。
 
 ```js
 // make the targetCameraPivot look at the tank
@@ -593,6 +614,7 @@ targetCameraPivot.lookAt(targetPosition);
 ```
 
 Finally we rotate all the wheels
+最後に、全ての車輪を回転させます。
 
 ```js
 wheelMeshes.forEach((obj) => {
@@ -601,6 +623,7 @@ wheelMeshes.forEach((obj) => {
 ```
 
 For the cameras we setup an array of all 4 cameras at init time with descriptions.
+初期化時に、4つ全てのカメラの配列を設定します。
 
 ```js
 const cameras = [
@@ -614,6 +637,7 @@ const infoElem = document.querySelector('#info');
 ```
 
 and cycle through our cameras at render time.
+描画時にカメラを周回させます。
 
 ```js
 const camera = cameras[time * .25 % cameras.length | 0];
@@ -628,5 +652,12 @@ a 3D engine like three.js well. Often it might seem like some complex math is ne
 to make something move and rotate the way you want. For example without a scene graph
 computing the motion of the moon or where to put the wheels of the car relative to its
 body would be very complicated but using a scene graph it becomes much easier.
+どのようにシーングラフが動作し、皆さんがそれを使えるかのアイデアをこの例から得られることを願っています。
+`Object3D`ノードを作り、物体をその親にすることは、three.jsのような3Dエンジンを上手く使うために
+重要なステップです。
+思い通りになにかを動かしたり回転させたりすることは、しばしば複雑な数学が必要に見えるかもしれません。
+例えばシーングラフなしで、月の動きを操作したり、車の車体に対して壮太知的に車輪を置いたりすることは、
+とても難しいかもしれません。しかし、シーングラフを使うことでとても簡単になるのです。
 
 [Next up we'll go over materials](threejs-materials.html).
+[次はマテリアルを説明します](threejs-materials.html)。
