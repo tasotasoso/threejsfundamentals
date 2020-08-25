@@ -314,7 +314,7 @@ setup our scene graph to do it for us.
 It is often useful to draw something to visualize the nodes in the scene graph.
 Three.js has some helpful ummmm, helpers to ummm, ... help with this.
 シーンフラフのノードが見えるようななにかを描写すると便利なことがあります。
-Three.jsはこれをするのに、helpful ummmmとか、helpers to ummmとか...があります。
+Three.jsはこれをするのに、helpfulなにがしとか、なにがしのhelpersとか...があります。
 
 One is called an `AxesHelper`. It draws 3 lines representing the local
 <span style="color:red">X</span>,
@@ -337,9 +337,9 @@ To do this we set their material's `depthTest` to false which means they will
 not check to see if they are drawing behind something else. We also
 set their `renderOrder` to 1 (the default is 0) so that they get drawn after
 all the spheres. Otherwise a sphere might draw over them and cover them up.
-私たちの場合、たとえ球体の内側であったとしても、軸を表示させたいです。
+私たちの場合、たとえ球体の内部であったとしても、軸を表示させたいです。
 これをするために、マテリアルの`depthTest`をfalseにします。
-これによって、軸がなにかの内側に描画されているかどうかチェックしなくなります。
+これによって、軸がなにかの内部に描画されているかどうかチェックしなくなります。
 全ての球体の後に描画されるように、`renderOrder`も1に設定します（デフォルト値は0です）。
 そうしないと、球体が軸の上に描画され、軸を覆ってしまう可能性があります。
 
@@ -352,7 +352,7 @@ straight down and each of our objects is only rotating around its
 y axis we don't see much of the <span style="color:green">y (green)</span> axes.
 <span style="color:red">x (赤)</span> と<span style="color:blue">z (青)</span>の
 軸が見えます。私たちはオブジェクトをまっすぐ見下ろしていて、オブジェクトはy軸を中心に
-回転しているので、 <span style="color:green">y (緑)</span>軸があまり見えません。
+回転しているので、<span style="color:green">y (緑)</span>軸があまり見えません。
 
 It might be hard to see some of them as there are 2 pairs of overlapping axes. Both the `sunMesh`
 and the `solarSystem` are at the same position. Similarly the `earthMesh` and
@@ -374,14 +374,14 @@ automatically makes a UI to manipulate that property.
 [dat.GUI](https://github.com/dataarts/dat.gui)も使います。
 これはthree.jsプロジェクトでとても一般的なUIライブラリです。
 dat.GUIはオブジェクトとそのオブジェクトの属性名を受け取り、
-プロパティの型に基づいて自動的にその属性を操作するUIを作成します。
+属性の型に基づいて自動的にその属性を操作するUIを作成します。
 
 We want to make both a `GridHelper` and an `AxesHelper` for each node. We need
 a label for each node so we'll get rid of the old loop and switch to calling
 some function to add the helpers for each node
 それぞれのノードに対して、`GridHelper`と`AxesHelper`の両方を作りたいです。
 それぞれのノートにラベルが必要なので、古いループを削除し、
-各ノードのhelperを加える関数を呼ぶ形に切り替えていきます。
+各ノードにhelperを加える関数を呼ぶ形式に替えていきます。
 
 ```js
 -// add an AxesHelper to each node
@@ -418,10 +418,10 @@ the visible property of both the `AxesHelper` and `GridHelper` for a node.
 前述したように、dat.GUIは、オブジェクトの名前が付いた属性を操作するUIを自動的に生成します。
 属性の型に応じて異なるUIが作成されます。
 チェックボックスを作って欲しいので、`bool`属性を指定する必要があります。
-しかし、軸とグリッドの両方を一つの属性で表示/非表示にしたいので、属性のgetterとsetterを
-持ったクラスを作成します。
+しかし、軸とグリッドの両方を一つの属性で表示/非表示にしたいので、
+属性のgetterとsetterを持ったクラスを作成します。
 この方法で、dat.GUIに一つの属性を操作するように思わせることができますが、
-内部的には各ノードに`AxesHelper`と`GridHelper`の両方のvisibleプロパティを設定することができます。
+内部的には各ノードに`AxesHelper`と`GridHelper`の両方のvisible属性を設定することができます。
 
 
 ```js
@@ -460,7 +460,7 @@ class AxisGridHelper {
 One thing to notice is we set the `renderOrder` of the `AxesHelper`
 to 2 and for the `GridHelper` to 1 so that the axes get drawn after the grid.
 Otherwise the grid might overwrite the axes.
-注意することは`AxesHelper`の`renderOrder`を2に設定し、`GridHelper`には1を設定することです。
+注意することは、`AxesHelper`の`renderOrder`を2に設定し、`GridHelper`には1を設定することです。
 こうすることで、軸はグリッドの後に描画されます。
 そうしないと、グリッドが軸を上書きしてしまうかもしれません。
 
@@ -471,7 +471,7 @@ units out from the center just like we set above. You can see how the
 earth is in the *local space* of the `solarSystem`. Similarly if you
 turn on the `earthOrbit` you'll see how the moon is exactly 2 units
 from the center of the *local space* of the `earthOrbit`.
-`solarSystem`のチェックをオンにすると、まさに先ほど設定したように、
+`solarSystem`のチェックをオンにすると、上で設定したように、
 どのように地球が中心からちょうど10ユニットにあるか分かるでしょう。
 地球が`solarSystem`の*ローカルな空間*にどのように存在するか見ることができます。
 同様に、もし`earthOrbit`のチェックをオンにすると、
@@ -479,7 +479,7 @@ from the center of the *local space* of the `earthOrbit`.
 
 A few more examples of scene graphs. An automobile in a simple game world might have a scene graph like this
 もう少しシーングラフの例を紹介します。
-簡単なゲームの世界の自動車はこのようなシーングラフを持っているかもしれません。
+簡単なゲームの世界の自動車は、このようなシーングラフかもしれません。
 
 <img src="resources/images/scenegraph-car.svg" align="center">
 
@@ -488,7 +488,7 @@ to bounce separate from the wheels you might parent the body and the wheels to a
 that represents the car's frame.
 もし車のbody全体を動かすと、それに伴ってwheelsが動くでしょう。
 もしbodyにwheelsとは別にバウンドして欲しいとすると、
-bodyとwheelsを、車のフレームを表す"frame"ノードの親とすることができます。
+bodyとwheelsを、車のフレームを表す"frame"ノードの子要素とできます。
 
 Another example is a human in a game world.
 別の例はゲームの世界の人間です。
