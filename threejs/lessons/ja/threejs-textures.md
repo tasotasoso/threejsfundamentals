@@ -144,9 +144,10 @@ if you want to allow multiple images on a single geometry. A Texture atlas
 is where you put multiple images in a single texture and then use texture coordinates
 on the vertices of your geometry to select which parts of a texture are used on
 each triangle in your geometry.
-一つのジオメトリに複数の画像を適用したいなら、
+1つのジオメトリに複数の画像を適用したいなら、
 [テクスチャアトラス](https://en.wikipedia.org/wiki/Texture_atlas)を使うのが、ほかの3Dエンジンでははるかに一般的で、はるかに高性能です。
-
+テクスチャアトラスは、一つのテクスチャに複数の画像を配置し、ジオメトリの頂点の座標を使って
+テクスチャのどの部分がジオメトリのおのおのの三角形に使われるか、選択するものです。
 
 What are texture coordinates? They are data added to each vertex of a piece of geometry
 that specify what part of the texture corresponds to that specific vertex.
