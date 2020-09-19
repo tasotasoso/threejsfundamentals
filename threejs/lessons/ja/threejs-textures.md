@@ -152,14 +152,23 @@ each triangle in your geometry.
 What are texture coordinates? They are data added to each vertex of a piece of geometry
 that specify what part of the texture corresponds to that specific vertex.
 We'll go over them when we start [building custom geometry](threejs-custom-geometry.html).
+テクスチャの座標とはなんでしょうか？ジオメトリ頂点に与えられたデータのことで、
+テクスチャのどの部分がその頂点に対応するか指定するものです。
+[カスタムジオメトリの構築](threejs-custom-geometry.html)を始めるときに説明します。
 
 ## <a name="loading"></a> Loading Textures
+## <a name="loading"></a> テクスチャの読み込み
 
 ### <a name="easy"></a> The Easy Way
+### <a name="easy"></a> 簡単な方法
 
 Most of the code on this site uses the easiest method of loading textures.
 We create a `TextureLoader` and then call its [`load`](TextureLoader.load) method.
 This returns a `Texture` object.
+このサイトのコードのほとんどは、もっとも簡単なテクスチャの読み込み方を使っています。
+`TextureLoader`を作り、その[`load`](TextureLoader.load)メソッドを呼びます。
+これは`Texture`オブジェクトを返します。
+
 
 ```js
 const texture = loader.load('resources/images/flower-1.jpg');
@@ -168,17 +177,25 @@ const texture = loader.load('resources/images/flower-1.jpg');
 It's important to note that using this method our texture will be transparent until
 the image is loaded asynchronously by three.js at which point it will update the texture
 with the downloaded image.
+このメソッドを使うと、画像がthree.jsによって非同期的に読み込まれるまで、テクスチャ透明になってしましまいます。読み込まれた時点で、テクスチャをダウンロードした画像に更新します。
+
 
 This has the big advantage that we don't have to wait for the texture to load and our
 page will start rendering immediately. That's probably okay for a great many use cases
 but if we want we can ask three.js to tell us when the texture has finished downloading.
+この方法では、テクスチャの読み込みを待つ必要がなく、ページをすぐにレンダリングし始めることができるという、大きな利点があります。
+多くのケースでこの方法で問題ありませんが、テクスチャをダウンロードし終えたときにthree.jsに通知してもらうこともできます。
 
 ### <a name="wait1"></a> Waiting for a texture to load
+### <a name="wait1"></a> テクスチャの読み込みの待機
 
 To wait for a texture to load the `load` method of the texture loader takes a callback
 that will be called when the texture has finished loading. Going back to our top example
 we can wait for the texture to load before creating our `Mesh` and adding it to scene
 like this
+テクスチャの読み込みを待つために、テクスチャローダーの`load`メソッドは、テクスチャの読み込みが終了したときに呼ばれるコールバックを取ります。
+冒頭の例に戻り、このように、`Mesh`を作りシーンに追加する前に、テクスチャの読み込みを待つことができます。
+
 
 ```js
 const loader = new THREE.TextureLoader();
@@ -194,6 +211,8 @@ loader.load('resources/images/wall.jpg', (texture) => {
 
 Unless you clear your browser's cache and have a slow connection you're unlikely
 to see the any difference but rest assured it is waiting for the texture to load.
+ブラウザのキャッシュをクリアし、接続が遅くならない限り、違いが分かることはないと思いますが、
+テクスチャが読み込まれるのを待っているので、安心してください。
 
 {{{example url="../threejs-textured-cube-wait-for-texture.html" }}}
 
