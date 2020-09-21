@@ -40,12 +40,12 @@ Three.jsにはたくさんのトピックがあり、互いに関係している
 <li><a href="#loading">テクスチャの読み込み</a></li>
 <ul>
   <li><a href="#easy">簡単な方法</a></li>
-  <li><a href="#wait1">テクスチャの読み込みの待機</a></li>
-  <li><a href="#waitmany">複数テクスチャの読み込みの待機</a></li>
+  <li><a href="#wait1">テクスチャの読み込みを待つ</a></li>
+  <li><a href="#waitmany">複数テクスチャの読み込みを待つ</a></li>
   <li><a href="#cors">異なるオリジンからのテクスチャの読み込み</a></li>
 </ul>
 <li><a href="#memory">メモリ使用</a></li>
-<li><a href="#format">JPGとPNG</a></li>
+<li><a href="#format">JPG vs PNG</a></li>
 <li><a href="#filtering-and-mips">フィルタリングとmips</a></li>
 <li><a href="#uvmanipulation">Repeating, offseting, rotating, wrapping</a></li>
 </ul>
@@ -187,7 +187,7 @@ but if we want we can ask three.js to tell us when the texture has finished down
 多くのケースでこの方法で問題ありませんが、テクスチャをダウンロードし終えたときにthree.jsに通知してもらうこともできます。
 
 ### <a name="wait1"></a> Waiting for a texture to load
-### <a name="wait1"></a> テクスチャの読み込みの待機
+### <a name="wait1"></a> テクスチャの読み込みを待つ
 
 To wait for a texture to load the `load` method of the texture loader takes a callback
 that will be called when the texture has finished loading. Going back to our top example
@@ -217,10 +217,14 @@ to see the any difference but rest assured it is waiting for the texture to load
 {{{example url="../threejs-textured-cube-wait-for-texture.html" }}}
 
 ### <a name="waitmany"></a> Waiting for multiple textures to load
+### <a name="waitmany"></a> 複数テクスチャの読み込みを待つ
+
 
 To wait until all textures have loaded you can use a `LoadingManager`. Create one
 and pass it to the `TextureLoader` then set its  [`onLoad`](LoadingManager.onLoad)
 property to a callback.
+全てのテクスチャが読み込まれたことを待つために、`LoadingManager`を使うことができます。
+`TextureLoader`を渡すと、[`onLoad`](LoadingManager.onLoad)属性がコールバックに設定されます。
 
 ```js
 +const loadManager = new THREE.LoadingManager();
@@ -244,8 +248,11 @@ const materials = [
 
 The `LoadingManager` also has an [`onProgress`](LoadingManager.onProgress) property
 we can set to another callback to show a progress indicator.
+`LoadingManager`は[`onProgress`](LoadingManager.onProgress)属性もあり、
+プログレスインジケーターを表示するためのコールバックを設定できます。
 
 First we'll add a progress bar in HTML
+まず、HTMLにプログレスバーを追加しましょう。
 
 ```html
 <body>
@@ -257,6 +264,7 @@ First we'll add a progress bar in HTML
 ```
 
 and the CSS for it
+そしてCSSにも追加します。
 
 ```css
 #loading {
@@ -286,6 +294,8 @@ and the CSS for it
 Then in the code we'll update the scale of the `progressbar` in our `onProgress` callback. It gets
 called with the URL of the last item loaded, the number of items loaded so far, and the total
 number of items loaded.
+そうすると、コード内で`onProgress`コールバックの`progressbar`のスケールが更新できます。
+これは、最後のアイテムが読み込まれるURL、いま読み込まれているアイテムの数、アイテムの合計数と一緒に呼ばれます。
 
 ```js
 +const loadingElem = document.querySelector('#loading');
@@ -306,10 +316,12 @@ loadManager.onLoad = () => {
 
 Unless you clear your cache and have a slow connection you might not see
 the loading bar.
+キャッシュを削除して低速なコネクションを作らない限りは、プログレスバーを見ることできないかもしれません。
 
 {{{example url="../threejs-textured-cube-wait-for-all-textures.html" }}}
 
 ## <a name="cors"></a> Loading textures from other origins
+## <a name="cors"></a> 異なるオリジンからのテクスチャの読み込み
 
 To use images from other servers those servers need to send the correct headers.
 If they don't you cannot use the images in three.js and will get an error.
@@ -317,51 +329,81 @@ If you run the server providing the images make sure it
 [sends the correct headers](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
 If you don't control the server hosting the images and it does not send the
 permission headers then you can't use the images from that server.
+異なるサーバーの画像を使うため、そのサーバーは正しいヘッダーを送る必要があります。
+そうしないと、three.jsでその画像を使うことができず、エラーを受け取るでしょう。
+もし皆さんが画像を提供するサーバーを運用しているなら、
+[正しいヘッダーを送る](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS)を確認してください。
+画像をホスティングしているサーバーに手を入れられず、権限用のヘッダーを送ることができないなら、
+そのサーバーからの画像を使うことはできません。
+
 
 For example [imgur](https://imgur.com), [flickr](https://flickr.com), and
 [github](https://github.com) all send headers allowing you to use images
 hosted on their servers in three.js. Most other websites do not.
+例えば、[imgur](https://imgur.com)、[flickr](https://flickr.com)、そして
+[github](https://github.com)は全て、ホストしている画像を
+three.jsで使うことができるようなヘッダーを送っています。
 
 ## <a name="memory"></a> Memory Usage
+## <a name="memory"></a>メモリ使用
 
 Textures are often the part of a three.js app that use the most memory. It's important to understand
 that *in general*, textures take `width * height * 4 * 1.33` bytes of memory.
+多くの場合、テクスチャはthree.jsアプリの中で最もメモリを使っています。
+*一般的に*テクスチャは`幅 * 高さ * 4 * 1.33`バイトのメモリを消費していることを理解するのは重要です。
 
 Notice that says nothing about compression. I can make a .jpg image and set its compression super
 high. For example let's say I was making a scene of a house. Inside the house there is a table
 and I decide to put this wood texture on the top surface of the table
+圧縮については言及していないことに注意してください。.jpgイメージを作り、超高圧縮することもできます。
+例えば、家のシーンを作っているとしましょう。家の中には、テーブルがあり、上面に木目のテクスチャを置くことに決めました。
 
 <div class="threejs_center"><img class="border" src="resources/images/compressed-but-large-wood-texture.jpg" align="center" style="width: 300px"></div>
 
 That image is only 157k so it will download relatively quickly but [it is actually
 3024 x 3761 pixels in size](resources/images/compressed-but-large-wood-texture.jpg).
 Following the equation above that's
+このイメージはたった157kなので、比較的速くダウンロードすることができます。しかし、
+[実際には3024 x 3761ピクセルの大きさ](resources/images/compressed-but-large-wood-texture.jpg)です。
+前述した式によると、
 
     3024 * 3761 * 4 * 1.33 = 60505764.5
 
 That image will take **60 MEG OF MEMORY!** in three.js.
 A few textures like that and you'll be out of memory.
+となり、three.jsの**60メガのメモリ！**を消費するでしょう。
+このようなテクスチャが少しあれば、メモリリークしてしまうでしょう。
 
 I bring this up because it's important to know that using textures has a hidden cost.
 In order for three.js to use the texture it has to hand it off to the GPU and the
 GPU *in general* requires the texture data to be uncompressed.
+この例を持ち出したのは、テクスチャ使用の隠れたコストを知っていることが重要だからです。
+three.jsでテクスチャを使うためには、テクスチャのデータをGPUに渡し、*一般的に*非圧縮にしておく必要があります。
 
 The moral of the story is make your textures small in dimensions not just small
 in file size. Small in file size = fast to download. Small in dimensions = takes
 less memory. How small should you make them?
 As small as you can and still look as good as you need them to look.
+この話の教訓は、テクスチャをファイルサイズだけでなく、次元も小さくすることです。
+ファイルサイズの小ささ = 高速なダウンロードです。次元の小ささ = 省メモリです。
+では、どのように小さくできるのでしょうか？
 
+## <a name="format"></a> JPG vs PNG
 ## <a name="format"></a> JPG vs PNG
 
 This is pretty much the same as regular HTML in that JPGs have lossy compression,
 PNGs have lossless compression so PNGs are generally slower to download.
 But, PNGs support transparency. PNGs are also probably the appropriate format
 for non-image data like normal maps, and other kinds of non-image maps which we'll go over later.
+これは通常のHTMLとほぼ同じで、PNGはロスレス圧縮なので、lossy圧縮のJPGよりも
+一般的にダウンロードが遅くなります。
 
 It's important to remember that a JPG doesn't use
 less memory than a PNG in WebGL. See above.
+WebGLにおいて、上で見たように、JPGがPNGよりも省メモリではないことを覚えておいてください。
 
 ## <a name="filtering-and-mips"></a> Filtering and Mips
+## <a name="filtering-and-mips"></a> フィルタリングとmips
 
 Let's apply this 16x16 texture
 
