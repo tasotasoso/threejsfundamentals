@@ -46,7 +46,7 @@ Three.jsにはたくさんのトピックがあり、互いに関係している
 </ul>
 <li><a href="#memory">メモリ使用</a></li>
 <li><a href="#format">JPG vs PNG</a></li>
-<li><a href="#filtering-and-mips">フィルタリングとmips</a></li>
+<li><a href="#filtering-and-mips">フィルタリングとMIP</a></li>
 <li><a href="#uvmanipulation">Repeating, offseting, rotating, wrapping</a></li>
 </ul>
 
@@ -403,58 +403,79 @@ less memory than a PNG in WebGL. See above.
 WebGLにおいて、上で見たように、JPGがPNGよりも省メモリではないことを覚えておいてください。
 
 ## <a name="filtering-and-mips"></a> Filtering and Mips
-## <a name="filtering-and-mips"></a> フィルタリングとmips
+## <a name="filtering-and-mips"></a> フィルタリングとMIP
 
 Let's apply this 16x16 texture
+この16x16のテクスチャを
 
 <div class="threejs_center"><img src="resources/images/mip-low-res-enlarged.png" class="nobg" align="center"></div>
 
 To a cube
+立方体に適用してみます。
 
 <div class="spread"><div data-diagram="filterCube"></div></div>
 
 Let's draw that cube really small
+この立方体をとても小さく描画してみましょう。
 
 <div class="spread"><div data-diagram="filterCubeSmall"></div></div>
 
 Hmmm, I guess that's hard to see. Let's magnify that tiny cube
+ふーむ、見えにくいです。小さな立方体を拡大してみましょう。
 
 <div class="spread"><div data-diagram="filterCubeSmallLowRes"></div></div>
 
 How does the GPU know which colors to make each pixel it's drawing for the tiny cube?
 What if the cube was so small that it's just 1 or 2 pixels?
+GPUは小さな立方体のどのピクセルにどの色を使うか、どうやって知るのでしょうか？
+立方体が小さすぎて1、2ピクセルしかないとしたらどうでしょうか？
 
 This is what filtering is about.
+フィルタリングとはこういうものです。
 
 If it was Photoshop, Photoshop would average nearly all the pixels together to figure out what color
 to make those 1 or 2 pixels. That would be a very slow operation. GPUs solve this issue
 using mipmaps.
+もしフォトショップなら近くの全てのピクセルを平均して、1、2ピクセルの色を見つけます。
+これはとても遅い操作です。GPUはミップマップを使ってこの問題を解決します。
 
 Mips are copies of the texture, each one half as wide and half as tall as the previous
 mip where the pixels have been blended to make the next smaller mip. Mips are created
 until we get all the way to a 1x1 pixel mip. For the image above all of the mips would
 end up being something like this
+MIPはテクスチャのコピーで、ピクセルがブレンドされて次の小さいMIPを作られるために、前のMIPの半分の幅と半分の高さになっています。
+MIPは1x1ピクセルのMIPが得られるまで作られます。
+全てのMIP上の画像はこのようになります。
 
 <div class="threejs_center"><img src="resources/images/mipmap-low-res-enlarged.png" class="nobg" align="center"></div>
 
 Now, when the cube is drawn so small that it's only 1 or 2 pixels large the GPU can choose
 to use just the smallest or next to smallest mip level to decide what color to make the
 tiny cube.
+さて、立方体が1、2ピクセルの小ささに描かれたとき、どんな色にするか決めるため、GPUは最も小さなMIPのレベルか次に小さいMIPのレベルか選ぶことができます。
+
 
 In three you can choose what happens both when the texture is drawn
 larger than its original size and what happens when it's drawn smaller than its
 original size.
+three.jsでは、テクスチャが元の大きさより大きく描かれたときと、小さく描かれたときの両方で、起こることを選ぶことができます。
+
 
 For setting the filter when the texture is drawn larger than its original size
 you set [`texture.magFilter`](Texture.magFilter) property to either `THREE.NearestFilter` or
  `THREE.LinearFilter`.  `NearestFilter` means
 just pick the closet single pixel from the original texture. With a low
 resolution texture this gives you a very pixelated look like Minecraft.
+テクスチャが元の大きさより大きく描かれたときのフィルタ設定として、[`texture.magFilter`](Texture.magFilter)属性に`THREE.NearestFilter`か`THREE.LinearFilter`を設定することができます。
+`NearestFilter`は元のテクスチャから最も近い1ピクセルを使用するということです。
+低解像度のテクスチャでは、マインクラフトのようにピクセル化された見た目になります。
 
 `LinearFilter` means choose the 4 pixels from the texture that are closest
 to the where we should be choosing a color from and blend them in the
 appropriate proportions relative to how far away the actual point is from
 each of the 4 pixels.
+`LinearFilter`はテクスチャから、色を決めたいピクセルに最も近い4ピクセルを選び、
+実際の点が4つのピクセルからどれだけ離れているかに応じて適切な比率で混ぜ合わせます。
 
 <div class="spread">
   <div>
@@ -469,32 +490,41 @@ each of the 4 pixels.
 
 For setting the filter when the texture is drawn smaller than its original size
 you set the [`texture.minFilter`](Texture.minFilter) property to one of 6 values.
+元の大きさよりもテクスチャが小さく描画された時のフィルタ設定では、
+[`texture.minFilter`](Texture.minFilter)属性を6つの値から一つ設定できます。
 
 * `THREE.NearestFilter`
 
    same as above, choose the closest pixel in the texture
+   上と同様に、テクスチャの最も近いピクセルを選ぶ。
 
 * `THREE.LinearFilter`
 
    same as above, choose 4 pixels from the texture and blend them
+   上と同様に、テクスチャから4ピクセルを選んで混ぜ合わせる。
 
 * `THREE.NearestMipmapNearestFilter`
 
    choose the appropriate mip then choose one pixel
+   適切なMIPを選んでピクセルを一つ選ぶ。
 
 * `THREE.NearestMipmapLinearFilter`
 
    choose 2 mips, choose one pixel from each, blend the 2 pixels
+   2つMIPを選び、それぞれからピクセルを選んで、その2つを混ぜる。
 
 * `THREE.LinearMipmapNearestFilter`
 
    chose the appropriate mip then choose 4 pixels and blend them
+   適切なMIPを選び、4ピクセルを選んで混ぜ合わせる。
 
 *  `THREE.LinearMipmapLinearFilter`
 
    choose 2 mips, choose 4 pixels from each and blend all 8 into 1 pixel
+   2つMIPを選び、それぞれから4ピクセルを選んで、8つ全部を混ぜ合わせて1ピクセルにする。
 
 Here's an example showing all 6 settings
+ここで6つ全ての設定の例を見せましょう。
 
 <div class="spread">
   <div data-diagram="filterModes" style="
