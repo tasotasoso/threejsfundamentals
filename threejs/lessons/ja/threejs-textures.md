@@ -327,7 +327,7 @@ MIPは1x1ピクセルのMIPが得られるまで作られます。
 
 <div class="threejs_center"><img src="resources/images/mipmap-low-res-enlarged.png" class="nobg" align="center"></div>
 
-さて、立方体が1、2ピクセルの小ささに描かれたとき、どんな色にするか決めるため、GPUは最も小さなMIPか次に小さいMIPか選ぶことができます。
+さて、立方体が1、2ピクセルの小ささに描かれたとき、どんな色にするか決めるため、GPUは最も小さなMIPレベルか次に小さいMIPか選ぶことができます。
 
 
 three.jsでは、テクスチャが元の大きさより大きく描かれたときと、小さく描かれたときの両方で、処理の設定を選ぶことができます。
@@ -417,7 +417,7 @@ three.jsでは、テクスチャが元の大きさより大きく描かれたと
 良い色の表現には至っていません。
 ほかの4つの中では、右下の`LinearMipmapLinearFilter`が一番良いです。
 
-上の画像をクリックすると、上で使用しているテクスチャと、MIPごとに色が異なるテクスチャが切り替わります。
+上の画像をクリックすると、上で使用しているテクスチャと、MIPレベルごとに色が異なるテクスチャが切り替わります。
 
 <div class="threejs_center">
   <div data-texture-diagram="differentColoredMips"></div>
