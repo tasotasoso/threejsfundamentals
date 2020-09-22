@@ -47,7 +47,7 @@ Three.jsにはたくさんのトピックがあり、互いに関係している
 <li><a href="#memory">メモリ使用</a></li>
 <li><a href="#format">JPG vs PNG</a></li>
 <li><a href="#filtering-and-mips">フィルタリングとMIP</a></li>
-<li><a href="#uvmanipulation">Repeating, offseting, rotating, wrapping</a></li>
+<li><a href="#uvmanipulation">テクスチャの繰り返し、オフセット、回転、ラッピング</a></li>
 </ul>
 
 ## <a name="hello"></a> ハロー・テクスチャ
@@ -452,7 +452,7 @@ MIPは1x1ピクセルのMIPが得られるまで作られます。
 Now, when the cube is drawn so small that it's only 1 or 2 pixels large the GPU can choose
 to use just the smallest or next to smallest mip level to decide what color to make the
 tiny cube.
-さて、立方体が1、2ピクセルの小ささに描かれたとき、どんな色にするか決めるため、GPUは最も小さなMIPのレベルか次に小さいMIPのレベルか選ぶことができます。
+さて、立方体が1、2ピクセルの小ささに描かれたとき、どんな色にするか決めるため、GPUは最も小さなMIPか次に小さいMIPか選ぶことができます。
 
 
 In three you can choose what happens both when the texture is drawn
@@ -564,18 +564,26 @@ picking pixels from the original texture. On the left just one pixel is chosen a
 in the middle 4 are chosen and blended but it's not enough come up with a good
 representative color. The other 4 strips do better with the bottom right,
 `LinearMipmapLinearFilter` being best.
+注意することは、左上と中央上は`NearestFilter`を使っていて、`LinearFilter`はMIPを使っていないことです。GPUが元のテクスチャからピクセルを選ぶので、遠くはちらついて見えます。
+左側はたった一つのピクセルが選ばれ、中央は4つのピクセルが選ばれて混ぜ合わされます。しかし、
+良い色の表現には至っていません。
+ほかの4つの中では、右下の`LinearMipmapLinearFilter`が一番良いです。
 
 If you click the picture above it will toggle between the texture we've been using above
 and a texture where every mip level is a different color.
+上の画像をクリックすると、上で使用しているテクスチャと、MIPごとに色が異なるテクスチャが切り替わります。
 
 <div class="threejs_center">
   <div data-texture-diagram="differentColoredMips"></div>
 </div>
 
-This makes it more clear
-what is happening. You can see in the top left and top middle the first mip is used all the way
+This makes it more clear what is happening.
+You can see in the top left and top middle the first mip is used all the way
 into the distance. The top right and bottom middle you can clearly see where a different mip
 is used.
+これで、起きていることが分かりやすいでしょう。
+左上と中央上は、最初のMIPがずっと遠くまで使われているのが分かります。
+右上と中央下は、別のMIPが使われているのがよく分かります。
 
 Switching back to the original texture you can see the bottom right is the smoothest,
 highest quality. You might ask why not always use that mode. The most obvious reason
@@ -586,30 +594,46 @@ to be the difference between fast and slow as we progress further into these art
 we'll eventually have materials that use 4 or 5 textures all at once. 4 textures * 8
 pixels per texture is looking up 32 pixels for ever pixel rendered.
 This can be especially important to consider on mobile devices.
+元のテクスチャに切り替えると、右下が滑らか、つまり高品質であることが分かります。
+なぜ常にこのモードにしないのか聞きたいかもしれません。
+最も明らかな理由は、レトロ感を出すために、ピクセル化してほしいとかです。
+次の理由は、8ピクセルを読んで混ぜ合わせることは、1ピクセルを読んで混ぜ合わせるよりも遅いことです。
+1つのテクスチャの速度では違いが出るように思えないかもしれませんが、
+記事が進むにつれて、最終的に4、5のテクスチャを一度に持つマテリアルが出てくるでしょう。
 
 ## <a name="uvmanipulation"></a> Repeating, offseting, rotating, wrapping a texture
+## <a name="uvmanipulation"></a> テクスチャの繰り返し、オフセット、回転、ラッピング
 
 Textures have settings for repeating, offseting, and rotating a texture.
+テクスチャは、繰り返し、オフセット、回転の設定があります。
 
 By default textures in three.js do not repeat. To set whether or not a
 texture repeats there are 2 properties, [`wrapS`](Texture.wrapS) for horizontal wrapping
 and [`wrapT`](Texture.wrapT) for vertical wrapping.
+three.jsのデフォルトのテクスチャは繰り返されません。
+テクスチャが繰り返されるかどうかの設定には、2つの属性があります。
+水平方向のラッピングに[`wrapS`](Texture.wrapS)と、垂直方向のラッピングに[`wrapT`](Texture.wrapT)です。
 
 They can be set to one of:
+以下のどれかが設定されます：
 
 * `THREE.ClampToEdgeWrapping`
 
    the last pixel on each edge is repeated forever
+   それぞれ角の最後のピクセルが永遠に繰り返されます。
 
 * `THREE.RepeatWrapping`
 
    the texture is repeated
+   テクスチャが繰り返されます。
 
 * `THREE.MirroredRepeatWrapping`
 
    the texture is mirrored and repeated
+   テクスチャの鏡像が取られ、繰り返されます。
 
 For example to turn on wrapping in both directions:
+例えば、両方向にラッピングすると、
 
 ```js
 someTexture.wrapS = THREE.RepeatWrapping;
@@ -617,6 +641,7 @@ someTexture.wrapT = THREE.RepeatWrapping;
 ```
 
 Repeating is set with the [repeat] repeat property.
+繰り返しは`repeat`属性で設定されます。
 
 ```js
 const timesToRepeatHorizontally = 4;
@@ -627,6 +652,9 @@ someTexture.repeat.set(timesToRepeatHorizontally, timesToRepeatVertically);
 Offseting the texture can be done by setting the `offset` property. Textures
 are offset with units where 1 unit = 1 texture size. On other words 0 = no offset
 and 1 = offset one full texture amount.
+テクスチャのオフセットは`offset`属性でできます。
+テクスチャは1単位 = 1テクスチャの大きさにオフセットされます。
+言い換えると、0 = オフセットなし、1 = テクスチャ全体の大きさということです。
 
 ```js
 const xOffset = .5;   // offset by half the texture
@@ -639,6 +667,11 @@ as well as the `center` property for choosing the center of rotation.
 It defaults to 0,0 which rotates from the bottom left corner. Like offset
 these units are in texture size so setting them to `.5, .5` would rotate
 around the center of the texture.
+テクスチャの回転は、`rotation`属性で、ラジアンで指定します。
+同様に `center`属性で回転の中心を指定します。
+デフォルトは0,0で、左下の角で回転します。
+オフセットと同じように、単位はテクスチャの大きさなので、`.5, .5`に設定すると、
+テクスチャの中心での回転になります。
 
 ```js
 someTexture.center.set(.5, .5);
@@ -646,8 +679,10 @@ someTexture.rotation = THREE.MathUtils.degToRad(45);
 ```
 
 Let's modify the top sample above to play with these values
+最初に取り上げたサンプルでこれらの値を試してみましょう。
 
 First we'll keep a reference to the texture so we can manipulate it
+最初に、テクスチャを操作できるように参照を保持しておきます。
 
 ```js
 +const texture = loader.load('resources/images/wall.jpg');
@@ -658,6 +693,7 @@ const material = new THREE.MeshBasicMaterial({
 ```
 
 Then we'll use [dat.GUI](https://github.com/dataarts/dat.gui) again to provide a simple interface.
+ここでも、簡単なインターフェースを提供するために[dat.GUI](https://github.com/dataarts/dat.gui)を使います。
 
 ```js
 import {GUI} from '../3rdparty/dat.gui.module.js';
@@ -666,6 +702,8 @@ import {GUI} from '../3rdparty/dat.gui.module.js';
 As we did in previous dat.GUI examples we'll use a simple class to
 give dat.GUI an object that it can manipulate in degrees
 but that will set a property in radians.
+以前のdat.GUIの例でしたように、dat.GUIに度数で操作できるオブジェクトを与え、
+ラジアン単位でプロパティを設定する簡単なクラスを使います。
 
 ```js
 class DegRadHelper {
@@ -685,6 +723,9 @@ class DegRadHelper {
 We also need a class that will convert from a string like `"123"` into
 a number like `123` since three.js requires numbers for enum settings
 like `wrapS` and `wrapT` but dat.GUI only uses strings for enums.
+`"123"`といった文字列から`123`といった数値に変換するクラスも必要です。
+これは、three.jsは`wrapS`や`wrapT`のようなenumの設定として数値が必要ですが、
+dat.GUIはenumに文字列のみを使うためです。
 
 ```js
 class StringToNumberHelper {
@@ -702,6 +743,7 @@ class StringToNumberHelper {
 ```
 
 Using those classes we can setup a simple GUI for the settings above
+このクラスを使って、上記設定のための簡単なGUIをセットアップできます。
 
 ```js
 const wrapModes = {
@@ -734,14 +776,22 @@ gui.add(new DegRadHelper(texture, 'rotation'), 'value', -360, 360)
 The last thing to note about the example is that if you change `wrapS` or
 `wrapT` on the texture you must also set [`texture.needsUpdate`](Texture.needsUpdate)
 so three.js knows to apply those settings. The other settings are automatically applied.
+最後に特記することは、もしテクスチャの`wrapS`や`wrapT`を変えるなら、
+three.jsが設定の適用を知るために、[`texture.needsUpdate`](Texture.needsUpdate)も設定しなければならないことです。
+
+
+
 
 {{{example url="../threejs-textured-cube-adjust.html" }}}
 
 This is only one step into the topic of textures. At some point we'll go over
 texture coordinates as well as 9 other types of textures that can be applied
 to materials.
+これはテクスチャのトピックへの第一歩にすぎません。
+ある時点で、テクスチャの座標や、マテリアルが適用できる別の9種のテクスチャについても説明します。
 
 For now let's move on to [lights](threejs-lights.html).
+今のところは、[光源](threejs-lights.html)に進みましょう。
 
 <!--
 alpha
